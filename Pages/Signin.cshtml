@@ -1,0 +1,61 @@
+﻿@page
+@model identityservertest.Pages.SigninModel
+@{
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <title>Sign In - @TenantName</title>
+</head>
+<body>
+    <div class="container body-content">
+        <div class="d-flex flex-column align-items-center justify-content-center h-100">
+
+            <div class="d-flex flex-column align-items-center justify-content-center login-container maxsize">
+
+                @if (!string.IsNullOrWhiteSpace(ViewBag.TenantImage))
+                {
+                    <img src="@ViewBag.TenantImage" class="login-logo" />
+                }
+
+                @using (Html.BeginForm("Signin", "Signin", FormMethod.Post, new { @class = "maxsize" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(false)
+
+                    @Html.HiddenFor(m => m.ReturnUrl)
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control form-control-lg", placeholder = "User Name", @id = "username" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-lg", placeholder = "Password", autocomplete = "off", @id = "password" })
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Login" name="button" class="btn btn-info btn-lg btn-block" id="submit" />
+                    </div>
+                }
+
+                @if (ViewBag.ShowPasswordResetLink == true)
+                {
+                    @Html.ActionLink("Forgotten Password", "ResetPassword", "PasswordReset", new { returnUrl = Model.ReturnUrl })
+                }
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>
